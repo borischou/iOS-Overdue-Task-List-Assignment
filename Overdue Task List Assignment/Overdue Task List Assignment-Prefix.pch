@@ -10,6 +10,14 @@
 #warning "This project uses features only available in iOS SDK 5.0 and later."
 #endif
 
+#define ADDED_TASKOBJECT @"added task object"
+#define TASK_TITLE @"task title"
+#define TASK_DESCRIPTION @"task description"
+#define TASK_DATE @"task date"
+#define COMPLETION_STATUS @"completion status"
+
+#import "BLTaskObject.h"
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
