@@ -63,27 +63,6 @@
     } else return NO;
 }
 
--(void)exchangeObjectAtIndexPath:(NSIndexPath *)sourceIndexPath withObjectAtIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSMutableArray *newPropertyList = [[[NSUserDefaults standardUserDefaults] arrayForKey:ADDED_TASKOBJECT] mutableCopy];
-    NSDictionary *newItemForDestination = [newPropertyList objectAtIndex:sourceIndexPath.row];
-    NSDictionary *newItemForSource = [newPropertyList objectAtIndex:destinationIndexPath.row];
-    [newPropertyList removeObjectAtIndex:sourceIndexPath.row];
-    [newPropertyList insertObject:newItemForSource atIndex:sourceIndexPath.row];
-    [newPropertyList removeObjectAtIndex:destinationIndexPath.row];
-    [newPropertyList insertObject:newItemForDestination atIndex:destinationIndexPath.row];
-    [[NSUserDefaults standardUserDefaults] setObject:newPropertyList forKey:ADDED_TASKOBJECT];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-//#pragma mark - BLEditTaskDelegate
-//-(void)didFinish {
-//    [self updateCurrentTaskObjects];
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
-
-//-(void)didEditCancel {
-//    [self dismissViewControllerAnimated:YES completion:nil];
-//}
-
 #pragma mark - BLAddTaskVCDelegate
 -(void)didAddTask:(BLTaskObject *)taskObject {
     [self.addedTaskObjects addObject:taskObject];
@@ -175,7 +154,12 @@
 }
 
 -(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    [self exchangeObjectAtIndexPath:sourceIndexPath withObjectAtIndexPath:destinationIndexPath];
+    NSMutableArray *newTaskObjectAsPropertyList = [[[NSUserDefaults standardUserDefaults] arrayForKey:ADDED_TASKOBJECT] mutableCopy];
+    NSDictionary *sourceItemForDestination = [newTaskObjectAsPropertyList objectAtIndex:sourceIndexPath.row];
+    [newTaskObjectAsPropertyList removeObjectAtIndex:sourceIndexPath.row];
+    [newTaskObjectAsPropertyList insertObject:sourceItemForDestination atIndex:destinationIndexPath.row];
+    [[NSUserDefaults standardUserDefaults] setObject:newTaskObjectAsPropertyList forKey:ADDED_TASKOBJECT];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self.tableView reloadData];
 }
 
